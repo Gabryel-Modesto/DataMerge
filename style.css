@@ -1,0 +1,112 @@
+/* Variáveis do tema claro */
+:Root {
+    --bg: #fff;
+    --texto: #111;
+    --borda: #e5e7eb;
+    --caixa: #f8fafc;
+    --acao: #2563eb;
+}
+
+/* Criando o tema []  e colocando variáveis do tema escuro*/
+[data-tema="escuro"] {
+    --bg: #0b1120;
+    --texto: #e5e7eb;
+    --borda: #1f2937;
+    --caixa: #111827;
+    --acao: #38bdf8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg);
+    color: var(--texto);
+}
+
+.topo {
+    border-bottom: 1px solid var(--borda);
+}
+
+.topo .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .75rem 1rem;
+}
+
+.caixa {
+    border: 1px solid var(--borda);
+    background-color: var(--caixa);
+    border-radius: .5rem;
+    padding: 2rem 1rem;
+    max-width: 80%;
+    margin: 1.5rem auto;
+}
+
+h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+}
+
+form {
+    display: grid;
+    gap: 1rem;
+}
+
+label {
+    font-weight: 600;
+}
+
+input {
+    padding: .7rem .9rem;
+    border: 1px solid var(--borda);
+    border-radius: .5rem;
+    background-color: var(--bg);
+    color: var(--texto);
+}
+
+/* Usado para selecionar o botão que está dentro do input */
+input[type="file"]::file-selector-button , .btn{
+    padding: .6rem .9rem;
+    border: 1px solid var(--borda);
+    background-color: var(--bg);
+    color: var(--texto);
+    border-radius: .5rem;
+    cursor: pointer;
+    
+}
+
+input[type="file"]::file-selector-button:hover{
+    opacity: 0.7;
+}
+
+.btn:hover {
+    opacity: 0.7;
+}
+
+#btnPrimario {
+    margin-top: 1rem;
+    background-color: var(--acao);
+    color: #fff;
+}
+
+.rodape {
+    border-top: 1px solid var(--borda);
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    margin-top: auto;
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataMerge</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topo">
+      <div class="container">
+        <h1>DataMerge</h1>
+        <button id="btnTrocaDeTema" class="btn">Alterar tema 🌓</button>
+      </div>
+    </header>
+    <main class="container">
+      <section class="caixa">
+        <form method="post" id="formulario">
+          <label for="arquivo1">Arquivo Principal</label>
+          <input
+            type="file"
+            name="arquivo1"
+            id="arquivo1"
+            class="arquivo"
+            accept=".csv, .xlsx, .xls"
+          />
+
+          <label for="arquivo2">Arquivo Secundário</label>
+          <input
+            type="file"
+            name="arquivo2"
+            id="arquivo2"
+            class="arquivo"
+            accept=".csv, .xlsx, .xls"
+          />
+          <button type="submit" class="btn" id="btnPrimario">Baixar</button>
+        </form>
+      </section>
+    </main>
+    <footer class="rodape">
+      <small>&copy; Gabryel Modesto - 08/2026</small>
+    </footer>
+  </body>
+</html>
