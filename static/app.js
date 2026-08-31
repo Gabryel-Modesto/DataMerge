@@ -3,7 +3,7 @@ const btn = document.getElementById("btnTrocaDeTema");
 const arquivo1 = document.getElementById("arquivo1");
 const arquivo2 = document.getElementById("arquivo2")
 const formulario = document.getElementById("formulario")
-const URL = "http://localhost:3000";
+const URL = "http://localhost:3000/merge";
 
 // Botão para a troca de tema
 btn.addEventListener("click", () => {
@@ -15,31 +15,34 @@ btn.addEventListener("click", () => {
     };
 });
 
-// Caso algum dos campos estiverem vazios, não tem como fazer o submit
-formulario.addEventListener("submit", (e) => {
-    if(!arquivo1.value
-    || !arquivo2.value) {
-        e.preventDefault();
-        alert("O campo não pode estar vazio");
+// Validando campos
+function validarDados(){
+    if(!arquivo1.value || !arquivo2 .value) {
+        alert("Campo não pode ser vázio!");
+        return false;
     };
-});
+    return true;
+};
 
 // Fetch
+async function enviarDados(formData) {
+    const res = await fetch(URL,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+};
 
-async function pegaTodosOsArquivos() {
-    const res = await fetch(URL);
-
-    const data = await res.json();
-
-    arquivo1.classList.add("hide");
-    arquivo2.classList.add("hide");
-
-
-}
-
+// Enviando para o BackEnd
 formulario.addEventListener("submit", (e) => {
     e.preventDefault();
     
+    if(!validarDados()) {
+        return;
+    }
+    
     const formData = new FormData(formulario);
 
+    enviarDados(formData);
 });
