@@ -5,6 +5,12 @@ def juntarTabelas(arquivo1, arquivo2):
     contrato_viferro = pd.read_excel(arquivo1)
     contrato_clientes = pd.read_excel(arquivo2)
     
+    if "CODPROD" not in contrato_viferro.columns:
+        raise ValueError("A coluna 'CODPROD' não foi encontrada no arquivo principal.")
+    
+    if "CODPROD" not in contrato_clientes.columns:
+        raise ValueError("A coluna 'CODPROD' não foi encontrada no arquivo secundário.")
+
     resultado = pd.merge(
         contrato_viferro,
         contrato_clientes,

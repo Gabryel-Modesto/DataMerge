@@ -1,6 +1,6 @@
 from main import app
 
-from flask import render_template, request, flash, redirect, send_file
+from flask import render_template, request, send_file, jsonify
 from service.merge import juntarTabelas
 
 
@@ -22,35 +22,54 @@ def postar():
 
         # request.files contém os arquivos enviados pelo formulário.
         if 'arquivo1' not in request.files:
-            flash('arquivo1')
-            return redirect(request.url)
+            return jsonify({
+                "erro": "Arquivo principal não foi enviado!"
+            }), 400
 
         # Verifica se o arquivo2 foi enviado.
         if 'arquivo2' not in request.files:
-            flash('arquivo2')
-            return redirect(request.url)
+            return jsonify({
+                "erro": "Arquivo secundário não enviado!"
+            }), 400
 
         # Pega os arquivos enviados usando o mesmo "name"
         arquivo1 = request.files['arquivo1']
         arquivo2 = request.files['arquivo2']
-
-        if arquivo1.filename == '':
-            flash('Campo não pode ser vazio')
-            return redirect(request.url)
-
-        if arquivo2.filename == '':
-            flash('Campo não pode ser vazio')
-            return redirect(request.url)
-
-        # Verifica se os DOIS arquivos possuem extensões permitidas.
-        if allowed_file(arquivo1.filename) and allowed_file(arquivo2.filename):
-            arquivo_saida = juntarTabelas(arquivo1, arquivo2)
-            return send_file(
-                arquivo_saida,
-                as_attachment=True,
-                download_name="DataMerge.xlsx"
-            )
-
-        else:
-            return "Arquivos inválidos"
         
+        if arquivo1.filename == "":
+            return jsonify({
+                "erro": "Arquivo principal não foi selecionado!"
+            }), 400
+            
+        if arquivo2.filename == "":
+            return jsonify({
+                "erro": "Arquivo secundário não foi selecionado!"
+            }), 400
+
+        if not allowed_file(arquivo1.filename):
+            return jsonify({
+                "erro": "A extensão do arquivo principal não é permitida!"
+            }), 400
+
+        if not allowed_file(arquivo2.filename):
+            return jsonify({
+                "erro": "A extensão do arquivo secundário não é permitida!"
+            }), 400
+
+        # Processa as planilhas
+        try:
+            arquivo_saida = juntarTabelas(arquivo1, arquivo2)
+            
+        except Exception as erro:
+            return jsonify({
+                "erro": str(erro)
+            }), 500
+        
+        return send_file(
+            arquivo_saida,
+            as_attachment=True,
+            download_name="DataMerge.xlsx",
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            
+                       
+    

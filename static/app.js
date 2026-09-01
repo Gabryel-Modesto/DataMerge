@@ -7,78 +7,104 @@ const alertaError = document.getElementById("alertaErro");
 const mensagemErro = document.getElementById("mensagemErro");
 const removerArquivo1 = document.getElementById("removerArquivo1");
 const removerArquivo2 = document.getElementById("removerArquivo2");
-const API_URL  = "http://localhost:3000/merge";
+const btnPrimario = document.getElementById("btnPrimario");
+const temaSalo = localStorage.getItem("tema");
+const API_URL = "http://localhost:3000/merge";
 
 function mostrarErro(mensagem) {
-    mensagemErro.textContent = mensagem;
-    alertaError.classList.add("visivel");
+  mensagemErro.textContent = mensagem;
+  alertaError.classList.add("visivel");
 
-    setTimeout(() => {
-        alertaError.classList.remove("visivel");
-    }, 4000);
+  setTimeout(() => {
+    alertaError.classList.remove("visivel");
+  }, 4000);
 };
 
 removerArquivo1.addEventListener("click", () => {
-    arquivo1.value = "";
+  arquivo1.value = "";
 });
 
 removerArquivo2.addEventListener("click", () => {
-    arquivo2.value = "";
+  arquivo2.value = "";
 });
-
 
 // Botão para a troca de tema
 btn.addEventListener("click", () => {
-    const escuro = Root.getAttribute("data-tema") === "escuro";
-    if(escuro) {
-        Root.removeAttribute("data-tema");
-    } else {
-        Root.setAttribute("data-tema", "escuro")
-    };
+  const escuro = Root.getAttribute("data-tema") === "escuro";
+  if (escuro) {
+    Root.removeAttribute("data-tema");
+    localStorage.setItem("tema", "claro");
+  } else {
+    Root.setAttribute("data-tema", "escuro");
+    localStorage.setItem("tema", "escuro");
+  }
 });
 
+// Mantendo o tema salvo no localStorage
+if(temaSalo === "escuro") {
+  Root.setAttribute("data-tema", "escuro");
+}
+
 // Validando campos
-function validarDados(){
-    if(!arquivo1.value || !arquivo2 .value) {
-        mostrarErro("Campo não pode ser vázio!");
-        return false;
-    };
-    return true;
+function validarDados() {
+  if (!arquivo1.value || !arquivo2.value) {
+    mostrarErro("Campo não pode ser vázio!");
+    return false;
+  }
+  return true;
 };
 
 // Fetch
 async function enviarDados(formData) {
-    const res = await fetch(API_URL ,
-        {
-            method: "POST",
-            body: formData
-        });
-        // Pegando a resposta que veio do Flask
-        const blob = await res.blob();
+  btnPrimario.textContent = "Processando...";
+  btnPrimario.disable = true;
 
-        // Criando uma URL temporária
-        const url = URL.createObjectURL(blob);
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: formData,
+    });
 
-        const link = document.createElement("a");
+    if (!res.ok) {
+      const erro = await res.json();
+      mostrarErro(erro.erro);
+      return;
+    }
 
-        link.href = url;
+    // Pegando a resposta que veio do Flask
+    const blob = await res.blob();
 
-        link.download = "DataMerge.xlsx";
+    // Criando uma URL temporária
+    const url = URL.createObjectURL(blob);
 
-        link.click();
+    const link = document.createElement("a");
 
-        URL.revokeObjectURL(url);
+    link.href = url;
+
+    link.download = "DataMerge.xlsx";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+  } catch (error) {
+    mensagemErro("Não foi possível conectar ao servidor!");
+
+  } finally {
+    btnPrimario.textContent = "Baixar";
+    btnPrimario.disable = false;
+  };
 };
 
 // Enviando para o BackEnd
 formulario.addEventListener("submit", (e) => {
-    e.preventDefault();
-    
-    if(!validarDados()) {
-        return;
-    }
-    
-    const formData = new FormData(formulario);
+  e.preventDefault();
 
-    enviarDados(formData);
+  if (!validarDados()) {
+    return;
+  }
+
+  const formData = new FormData(formulario);
+
+  enviarDados(formData);
 });
