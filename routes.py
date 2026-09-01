@@ -1,6 +1,7 @@
 from main import app
 
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, send_file
+from service.merge import juntarTabelas
 
 
 # Extensões de arquivos que o DataMerge aceita
@@ -8,10 +9,7 @@ ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'xls'}
 
 # Verifica se o arquivo possui uma extensão permitida
 def allowed_file(filename):
-    return (
-        '.' in filename
-        and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-    )
+    return ( '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
 
 @app.route("/")
 def homepage():
@@ -46,7 +44,13 @@ def postar():
 
         # Verifica se os DOIS arquivos possuem extensões permitidas.
         if allowed_file(arquivo1.filename) and allowed_file(arquivo2.filename):
-            return "Arquivos válidos"
+            arquivo_saida = juntarTabelas(arquivo1, arquivo2)
+            return send_file(
+                arquivo_saida,
+                as_attachment=True,
+                download_name="DataMerge.xlsx"
+            )
 
         else:
             return "Arquivos inválidos"
+        

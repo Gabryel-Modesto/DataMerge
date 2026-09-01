@@ -3,7 +3,7 @@ const btn = document.getElementById("btnTrocaDeTema");
 const arquivo1 = document.getElementById("arquivo1");
 const arquivo2 = document.getElementById("arquivo2")
 const formulario = document.getElementById("formulario")
-const URL = "http://localhost:3000/merge";
+const API_URL  = "http://localhost:3000/merge";
 
 // Botão para a troca de tema
 btn.addEventListener("click", () => {
@@ -26,12 +26,26 @@ function validarDados(){
 
 // Fetch
 async function enviarDados(formData) {
-    const res = await fetch(URL,
+    const res = await fetch(API_URL ,
         {
             method: "POST",
             body: formData
-        }
-    );
+        });
+        // Pegando a resposta que veio do Flask
+        const blob = await res.blob();
+
+        // Criando uma URL temporária
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+
+        link.download = "DataMerge.xlsx";
+
+        link.click();
+
+        URL.revokeObjectURL(url);
 };
 
 // Enviando para o BackEnd
