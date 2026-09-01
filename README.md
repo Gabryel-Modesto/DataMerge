@@ -44,3 +44,9 @@ Ao final do processamento, o sistema gera automaticamente uma nova planilha Exce
 ### Ferramentas
 
 - **venv** — isolamento das dependências Python.
+
+## 🌐 Acesse
+
+[🚀 Acessar o DataMerge](https://datamerge-4itn.onrender.com/)
+
+> O DataMerge está hospedado no Render e pode ser utilizado diretamente pelo navegador.
