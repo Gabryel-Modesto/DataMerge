@@ -15,25 +15,40 @@
       </div>
     </header>
     <main class="container">
+      <div id="alertaErro" class="alerta alerta-erro">
+        <strong>Erro</strong>
+        <span id="mensagemErro"></span>
+      </div>
       <section class="caixa">
         <form method="post" id="formulario">
           <label for="arquivo1">Arquivo Principal</label>
-          <input
-            type="file"
-            name="arquivo1"
-            id="arquivo1"
-            class="arquivo"
-            accept=".csv, .xlsx, .xls"
-          />
+          <div class="arquivo-container">
+            <input
+              type="file"
+              name="arquivo1"
+              id="arquivo1"
+              class="arquivo"
+              accept=".csv, .xlsx, .xls"
+            />
+            <button type="button" class="btn-remover" id="removerArquivo1">
+              ×
+            </button>
+          </div>
 
           <label for="arquivo2">Arquivo Secundário</label>
-          <input
-            type="file"
-            name="arquivo2"
-            id="arquivo2"
-            class="arquivo"
-            accept=".csv, .xlsx, .xls"
-          />
+          <div class="arquivo-container">
+            <input
+              type="file"
+              name="arquivo2"
+              id="arquivo2"
+              class="arquivo"
+              accept=".csv, .xlsx, .xls"
+            />
+            <button type="button" class="btn-remover" id="removerArquivo2">
+              ×
+            </button>
+          </div>
+
           <button type="submit" class="btn" id="btnPrimario">Baixar</button>
         </form>
       </section>

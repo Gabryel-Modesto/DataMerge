@@ -1,9 +1,31 @@
 const Root = document.documentElement;
 const btn = document.getElementById("btnTrocaDeTema");
 const arquivo1 = document.getElementById("arquivo1");
-const arquivo2 = document.getElementById("arquivo2")
-const formulario = document.getElementById("formulario")
+const arquivo2 = document.getElementById("arquivo2");
+const formulario = document.getElementById("formulario");
+const alertaError = document.getElementById("alertaErro");
+const mensagemErro = document.getElementById("mensagemErro");
+const removerArquivo1 = document.getElementById("removerArquivo1");
+const removerArquivo2 = document.getElementById("removerArquivo2");
 const API_URL  = "http://localhost:3000/merge";
+
+function mostrarErro(mensagem) {
+    mensagemErro.textContent = mensagem;
+    alertaError.classList.add("visivel");
+
+    setTimeout(() => {
+        alertaError.classList.remove("visivel");
+    }, 4000);
+};
+
+removerArquivo1.addEventListener("click", () => {
+    arquivo1.value = "";
+});
+
+removerArquivo2.addEventListener("click", () => {
+    arquivo2.value = "";
+});
+
 
 // Botão para a troca de tema
 btn.addEventListener("click", () => {
@@ -18,7 +40,7 @@ btn.addEventListener("click", () => {
 // Validando campos
 function validarDados(){
     if(!arquivo1.value || !arquivo2 .value) {
-        alert("Campo não pode ser vázio!");
+        mostrarErro("Campo não pode ser vázio!");
         return false;
     };
     return true;
