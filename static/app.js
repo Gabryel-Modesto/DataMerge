@@ -9,7 +9,7 @@ const removerArquivo1 = document.getElementById("removerArquivo1");
 const removerArquivo2 = document.getElementById("removerArquivo2");
 const btnPrimario = document.getElementById("btnPrimario");
 const temaSalo = localStorage.getItem("tema");
-const API_URL = "http://localhost:3000/merge";
+const API_URL = "/merge";
 
 function mostrarErro(mensagem) {
   mensagemErro.textContent = mensagem;
